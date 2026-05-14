@@ -1,0 +1,14 @@
+{
+    "termekek_szama": 4,
+    "termek_atlagok": {
+        "Laptop A": 4.67,
+        "Eger X": 3.67,
+        "Konyv Z": 4.67,
+        "Tablet B": 3.67
+    },
+    "kategoriak_atlagai": {
+        "elektronika": 4.0,
+        "konyv": 4.67
+    },
+    "legjobb_termek": "Laptop A"
+}
