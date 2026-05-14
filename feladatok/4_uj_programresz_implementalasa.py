@@ -30,25 +30,86 @@ Implementaland fuggvenyek:
 """
 import json
 def beolvas_ertekelesek(fajlnev):
-
-     # TODO: valositsd meg
+    # TODO: valositsd meg
+    with open(fajlnev, "r", encoding="utf-8") as fajl:
+        return json.load(fajl)
     raise NotImplementedError("A fuggveny meg nincs implementalva.")
 
 def validalt_ertekeles(ertek):
     # TODO: valositsd meg (dobjon ValueError-t ha nem 1-5 kozotti egesz szam az ertek)
+    if not isinstance(ertek, int):
+        raise ValueError("Az ertekelesnek egesz szamnak kell lennie.")
+
+    if ertek < 1 or ertek > 5:
+        raise ValueError("Az ertekelesnek 1 es 5 kozott kell lennie.")
+
+    return True
     raise NotImplementedError("A fuggveny meg nincs implementalva.")
 
 def termek_atlag(rekord):
     # TODO: valositsd meg, hasznald a validalt_ertekeles()-t
+    ertekelesek = rekord["ertekelesek"]
+
+    if not ertekelesek:
+        return 0
+
+    osszeg = 0
+
+    for ertek in ertekelesek:
+        validalt_ertekeles(ertek)
+        osszeg += ertek
+
+    return osszeg / len(ertekelesek)
     raise NotImplementedError("A fuggveny meg nincs implementalva.")
 
 def kategoriak_atlagai(rekordok):
     # TODO: valositsd meg
+    kategoriak = {}
+
+    for rekord in rekordok:
+        kategoria = rekord["kategoria"]
+        atlag = termek_atlag(rekord)
+
+        if kategoria not in kategoriak:
+            kategoriak[kategoria] = []
+
+        kategoriak[kategoria].append(atlag)
+
+    eredmeny = {}
+
+    for kategoria, atlagok in kategoriak.items():
+        eredmeny[kategoria] = round(sum(atlagok) / len(atlagok), 2)
+
+    return eredmeny
     raise NotImplementedError("A fuggveny meg nincs implementalva.")
 
 def mentes_osszefoglalo_json(rekordok, fajlnev):
     # TODO: valositsd meg
-     raise NotImplementedError("A fuggveny meg nincs implementalva.")
+    termek_atlagok = {}
+
+    legjobb_termek = None
+    legjobb_atlag = -1
+
+    for rekord in rekordok:
+        nev = rekord["termek"]
+        atlag = termek_atlag(rekord)
+
+        termek_atlagok[nev] = round(atlag, 2)
+
+        if atlag > legjobb_atlag:
+            legjobb_atlag = atlag
+            legjobb_termek = nev
+
+    osszefoglalo = {
+        "termekek_szama": len(rekordok),
+        "termek_atlagok": termek_atlagok,
+        "kategoriak_atlagai": kategoriak_atlagai(rekordok),
+        "legjobb_termek": legjobb_termek
+    }
+
+    with open(fajlnev, "w", encoding="utf-8") as fajl:
+        json.dump(osszefoglalo, fajl, indent=4, ensure_ascii=False)
+
 
 if __name__ == "__main__":
     minta_rekordok = [
@@ -57,6 +118,15 @@ if __name__ == "__main__":
         {"termek": "Konyv Z",  "kategoria": "konyv",       "ertekelesek": [5, 5, 4]},
         {"termek": "Tablet B", "kategoria": "elektronika", "ertekelesek": [3, 4, 4]},
     ]
+    print("Laptop A atlaga:", termek_atlag(minta_rekordok[0]))
+
+    print("Kategoriak atlagai:",
+          kategoriak_atlagai(minta_rekordok))
+
+    mentes_osszefoglalo_json(
+        minta_rekordok,
+        "termek_osszefoglalo.json"
+    )
     # A TODO-k megoldasa utan ezek hasznalhatok tesztelesre:
     # print("Laptop A atlaga:", termek_atlag(minta_rekordok[0]))
     # print("Kategoriak atlagai:", kategoriak_atlagai(minta_rekordok))

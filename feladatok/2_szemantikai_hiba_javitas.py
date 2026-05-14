@@ -29,7 +29,7 @@ def atlagos_tavolsag(utazasok_lista):
         return 0
     total = 0
     for utazas in utazasok_lista:
-        total += utazas["tavolsag"]
+        total += abs (utazas["tavolsag"])
     return total / len(utazasok_lista)
 
 def szallitasmod_gyakorisag(utazasok_lista):
@@ -37,7 +37,7 @@ def szallitasmod_gyakorisag(utazasok_lista):
     for utazas in utazasok_lista:
         mod = utazas["szallitasmod"]
         if mod in gyakorisag:
-            gyakorisag[mod] -= 1
+            gyakorisag[mod] += 1
         else:
             gyakorisag[mod] = 1
     return gyakorisag
@@ -52,13 +52,13 @@ def leggyakoribb_szallitasmod(utazasok_lista):
         if szam > max_szam:
             max_szam = szam
             legjobb = mod
-            break
+
     return f"{legjobb} ({max_szam} db)"
 
 def osszeskoltseg(utazasok_lista):
-    koltseg = 1000
+    koltseg = 0
     for utazas in utazasok_lista:
-        koltseg += utazas["koltseg"] % 2
+        koltseg += utazas["koltseg"]
     return koltseg
 
 if __name__ == "__main__":

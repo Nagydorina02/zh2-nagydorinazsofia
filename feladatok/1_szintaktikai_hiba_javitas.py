@@ -15,23 +15,23 @@ Elvart kimenet a javitas utan:
 """
 termekek = [
     {"nev": "Billentyuzet", "darab": 12, "egysegar": 7500},
-    {"nev": "Eger", "darab": 0, "egysegar": 4200}
+    {"nev": "Eger", "darab": 0, "egysegar": 4200},
     {"nev": "Monitor", "darab": 4, "egysegar": 68500},
     {"nev": "Fejhallgato", "darab": 9, "egysegar": 15900},
 ]
-def keszlet_ertek_osszesen(adatok)
+def keszlet_ertek_osszesen(adatok):
     osszeg = 0
     for termek in adatok:
         osszeg += termek["darab"] * termek["egysegar"]
     return osszeg
 def elerheto_termekek(adatok):
-    return [termek["nev"] for termek in adatok if termek["darab"] > 0
+    return [termek["nev"] for termek in adatok if termek["darab"] > 0]
 def legdragabb_termek(adatok):
     legjobb = adatok[0]
-    for termek in adatok[1:]
-        if termek["egysegar"] > legjobb["egysegar"]
+    for termek in adatok[1:]:
+        if termek["egysegar"] > legjobb["egysegar"]:
             legjobb = termek
-     return legjobb["nev"]
+            return legjobb["nev"]
 
 if __name__ == "__main__":
     print("Keszlet osszertek:", keszlet_ertek_osszesen(termekek))
